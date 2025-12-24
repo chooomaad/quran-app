@@ -337,15 +337,8 @@ class _SurahDetailPageState extends State<SurahDetailPage> {
 
   final List<Reciter> reciters = [
     Reciter(
-        name: "عبد الرحمن السديس",
-        alquranCloudIdentifier: "ar.abdurrahmaansudais"),
-    Reciter(name: "ماهر المعيقلي", alquranCloudIdentifier: "ar.mahermuaiqly"),
-    Reciter(name: "مشاري راشد العفاسي", alquranCloudIdentifier: "ar.alafasy"),
-    Reciter(
         name: "عبد الباسط عبد الصمد (مرتل)",
         alquranCloudIdentifier: "ar.abdulbasitmurattal"),
-    Reciter(
-        name: "أحمد بن علي العجمي", alquranCloudIdentifier: "ar.ahmedalajmi"),
   ];
   late Reciter _selectedReciter;
 
