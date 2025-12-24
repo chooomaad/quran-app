@@ -9,6 +9,16 @@ import 'package:projet_flutter/athkar_page.dart';
 import 'package:projet_flutter/welcome_page.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
+String toArabicNumbers(String input) {
+  const english = '0123456789';
+  const arabic = '٠١٢٣٤٥٦٧٨٩';
+  return input
+      .split('')
+      .map((char) =>
+          english.contains(char) ? arabic[english.indexOf(char)] : char)
+      .join('');
+}
+
 void main() {
   runApp(const MyApp());
 }
@@ -246,7 +256,7 @@ class _HomePageState extends State<HomePage> {
                                     .withOpacity(0.1),
                               ),
                               child: Text(
-                                '${surah['number']}',
+                                toArabicNumbers('${surah['number']}'),
                                 style: TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
@@ -266,7 +276,7 @@ class _HomePageState extends State<HomePage> {
                             ),
                             const SizedBox(height: 4),
                             Text(
-                              '${surah['numberOfAyahs']} آية',
+                              '${toArabicNumbers(surah['numberOfAyahs'].toString())} آية',
                               style: TextStyle(
                                 fontSize: 14,
                                 color: Theme.of(context).colorScheme.primary,
@@ -801,7 +811,7 @@ class _SurahDetailPageState extends State<SurahDetailPage> {
                             children: ayahs.map<TextSpan>((ayah) {
                               return TextSpan(
                                 text:
-                                    "${ayah['text']} ﴿${ayah['numberInSurah']}﴾ ",
+                                    "${ayah['text']} ﴿${toArabicNumbers(ayah['numberInSurah'].toString())}﴾ ",
                                 style: TextStyle(
                                   fontFamily: 'AmiriQuran',
                                   fontSize: 26,

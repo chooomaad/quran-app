@@ -1,5 +1,15 @@
 import 'package:flutter/material.dart';
 
+String toArabicNumbers(String input) {
+  const english = '0123456789';
+  const arabic = '٠١٢٣٤٥٦٧٨٩';
+  return input
+      .split('')
+      .map((char) =>
+          english.contains(char) ? arabic[english.indexOf(char)] : char)
+      .join('');
+}
+
 // Modèle pour un Adhkar
 class AdhkarItem {
   final String text;
@@ -374,7 +384,7 @@ class _AthkarPageState extends State<AthkarPage> {
                     children: [
                       Expanded(
                         child: Text(
-                          'التكرار: ${adhkar.count}x',
+                          'التكرار: ${toArabicNumbers(adhkar.count.toString())}x',
                           textAlign: TextAlign.start,
                           style: TextStyle(
                             fontFamily: 'AmiriQuran',
