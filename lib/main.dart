@@ -353,8 +353,6 @@ class _SurahDetailPageState extends State<SurahDetailPage> {
   void initState() {
     super.initState();
     _selectedReciter = reciters.first;
-    print(
-        "SurahDetailPage initState: Surah ${widget.surahNumber}, Reciter: ${_selectedReciter.alquranCloudIdentifier}");
     _initAudioPlayer();
     fetchSurahDataAndPrepareAudio();
   }
@@ -374,8 +372,6 @@ class _SurahDetailPageState extends State<SurahDetailPage> {
 
     _playerStateSubscription = _audioPlayer?.playerStateStream.listen((state) {
       if (!mounted) return;
-      print(
-          "AudioPlayer State: Playing=${state.playing}, ProcessingState=${state.processingState}");
       if (_isPlaying != state.playing) {
         setState(() {
           _isPlaying = state.playing;
@@ -386,20 +382,15 @@ class _SurahDetailPageState extends State<SurahDetailPage> {
     _processingStateSubscription =
         _audioPlayer?.processingStateStream.listen((state) {
       if (!mounted) return;
-      print(
-          "AudioPlayer ProcessingState: $state. Current _isAudioReady before check: $_isAudioReady");
 
       bool newAudioReadyState = state == ProcessingState.ready;
       if (_isAudioReady != newAudioReadyState) {
-        print(
-            "Setting _isAudioReady to $newAudioReadyState based on ProcessingState $state");
         setState(() {
           _isAudioReady = newAudioReadyState;
         });
       }
 
       if (state == ProcessingState.completed) {
-        print("Audio processing state: COMPLETED. Ayah/Surah finished.");
         if (mounted) {
           setState(() {
             _isPlaying = false;
@@ -407,14 +398,12 @@ class _SurahDetailPageState extends State<SurahDetailPage> {
         }
       }
     }, onError: (error) {
-      print("Error in processing state stream: $error");
       _handleAudioError(error);
     });
   }
 
   void _handleAudioError(dynamic error) {
     if (!mounted) return;
-    print("Handling audio error: $error");
     setState(() {
       _isPlaying = false;
       _isAudioReady = false;
@@ -443,10 +432,7 @@ class _SurahDetailPageState extends State<SurahDetailPage> {
   }
 
   Future<void> fetchSurahDataAndPrepareAudio() async {
-    print(
-        "fetchSurahDataAndPrepareAudio for Surah ${widget.surahNumber} with reciter ${_selectedReciter.alquranCloudIdentifier}");
     if (!mounted) {
-      print("fetchSurahDataAndPrepareAudio aborted: not mounted");
       return;
     }
 
@@ -479,8 +465,6 @@ class _SurahDetailPageState extends State<SurahDetailPage> {
         final data = json.decode(response.body);
         setState(() {
           ayahs = data['data']['ayahs'];
-          print(
-              "Fetched ${ayahs.length} ayahs for Surah ${widget.surahNumber}");
         });
 
         if (ayahs.isNotEmpty) {
@@ -490,7 +474,6 @@ class _SurahDetailPageState extends State<SurahDetailPage> {
         throw Exception('فشل تحميل السورة (${response.statusCode})');
       }
     } catch (e) {
-      print("Error in fetchSurahDataAndPrepareAudio: $e");
       if (mounted) {
         _handleError(e);
       }
@@ -522,8 +505,6 @@ class _SurahDetailPageState extends State<SurahDetailPage> {
         // Utiliser l'URL directe du CDN pour l'audio de la sourate entière
         surahAudioUrl =
             "https://cdn.islamic.network/quran/audio-surah/128/${_selectedReciter.alquranCloudIdentifier}/${widget.surahNumber}.mp3";
-        print(
-            "Preparing single audio source (surah) for Surah ${widget.surahNumber} with reciter ${_selectedReciter.alquranCloudIdentifier}: $surahAudioUrl");
         if (kIsWeb) {
           audioSource = AudioSource.uri(Uri.parse(surahAudioUrl));
         } else {
@@ -531,8 +512,6 @@ class _SurahDetailPageState extends State<SurahDetailPage> {
         }
       } else {
         // Pour les autres récitateurs (ex: Sudais, Maher), charger verset par verset
-        print(
-            "Preparing concatenated audio source (verse by verse) for Surah ${widget.surahNumber} with reciter ${_selectedReciter.alquranCloudIdentifier}");
 
         // S'assurer que les ayahs sont chargés avec les données audio du récitateur sélectionné
         // Cet appel est crucial si fetchSurahDataAndPrepareAudio ne charge pas déjà les données audio du récitateur
@@ -603,14 +582,10 @@ class _SurahDetailPageState extends State<SurahDetailPage> {
       }
       await _audioPlayer!.setAudioSource(audioSource,
           initialPosition: Duration.zero, preload: true);
-      print("Audio source set successfully for Surah ${widget.surahNumber}");
       setState(() {
         _isLoadingAudio = false;
       });
     } catch (e) {
-      print(
-          "Error preparing audio for Surah ${widget.surahNumber} with reciter ${_selectedReciter.alquranCloudIdentifier}: $e");
-      print("URL tentée : $surahAudioUrl");
       if (mounted) {
         setState(() {
           _isLoadingAudio = false;
@@ -650,7 +625,6 @@ class _SurahDetailPageState extends State<SurahDetailPage> {
 
   void _togglePlay() async {
     if (!mounted || isLoading || !_isAudioReady || _audioPlayer == null) {
-      print("_togglePlay aborted: not mounted, loading, or audio not ready");
       if (!_isAudioReady && mounted) {
         showDialog(
           context: context,
@@ -717,8 +691,6 @@ class _SurahDetailPageState extends State<SurahDetailPage> {
         selected.alquranCloudIdentifier !=
             _selectedReciter.alquranCloudIdentifier) {
       if (!mounted) return;
-      print(
-          "Changing reciter to: ${selected.name} (${selected.alquranCloudIdentifier})");
 
       // Modifications pour un rechargement plus robuste
       await _audioPlayer?.stop(); // Arrêter explicitement la lecture en cours
@@ -735,7 +707,6 @@ class _SurahDetailPageState extends State<SurahDetailPage> {
 
   @override
   void dispose() {
-    print("SurahDetailPage dispose called.");
     _isDisposed = true;
     _playerStateSubscription?.cancel();
     _processingStateSubscription?.cancel();
@@ -746,7 +717,6 @@ class _SurahDetailPageState extends State<SurahDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    print("SurahDetailPage build called. isLoading: $isLoading");
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.surahName, style: const TextStyle(fontSize: 28)),
