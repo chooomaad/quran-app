@@ -242,12 +242,12 @@ class _HomePageState extends State<HomePage> {
                             ],
                           ),
                         ),
-                        padding: const EdgeInsets.all(12),
+                        padding: const EdgeInsets.all(8),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Container(
-                              padding: const EdgeInsets.all(6),
+                              padding: const EdgeInsets.all(4),
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 color: Theme.of(context)
@@ -258,27 +258,27 @@ class _HomePageState extends State<HomePage> {
                               child: Text(
                                 toArabicNumbers('${surah['number']}'),
                                 style: TextStyle(
-                                  fontSize: 18,
+                                  fontSize: 16,
                                   fontWeight: FontWeight.bold,
                                   color: Theme.of(context).colorScheme.primary,
                                 ),
                               ),
                             ),
-                            const SizedBox(height: 8),
+                            const SizedBox(height: 4),
                             Text(
                               surah['name'],
                               style: const TextStyle(
-                                fontSize: 18,
+                                fontSize: 16,
                                 fontWeight: FontWeight.bold,
                                 color: Color(0xFF234F1E),
                               ),
                               textAlign: TextAlign.center,
                             ),
-                            const SizedBox(height: 4),
+                            const SizedBox(height: 2),
                             Text(
                               '${toArabicNumbers(surah['numberOfAyahs'].toString())} آية',
                               style: TextStyle(
-                                fontSize: 14,
+                                fontSize: 12,
                                 color: Theme.of(context).colorScheme.primary,
                               ),
                               textAlign: TextAlign.center,
