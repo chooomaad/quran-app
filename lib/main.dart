@@ -777,16 +777,16 @@ class _SurahDetailPageState extends State<SurahDetailPage> {
                             padding: const EdgeInsets.only(bottom: 20.0),
                             child: Text(
                               'بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ',
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontFamily: 'AmiriQuran',
                                 fontSize: 28,
                                 fontWeight: FontWeight.bold,
-                                color: Color(0xFF234F1E),
+                                color: const Color(0xFF234F1E),
                                 shadows: [
                                   Shadow(
                                     blurRadius: 5.0,
-                                    color: Colors.black.withOpacity(0.2),
-                                    offset: Offset(1.0, 1.0),
+                                    color: const Color.fromRGBO(0, 0, 0, 0.2),
+                                    offset: const Offset(1.0, 1.0),
                                   ),
                                 ],
                               ),
@@ -802,7 +802,7 @@ class _SurahDetailPageState extends State<SurahDetailPage> {
                               return TextSpan(
                                 text:
                                     "${ayah['text']} ﴿${ayah['numberInSurah']}﴾ ",
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontFamily: 'AmiriQuran',
                                   fontSize: 26,
                                   height: 2.2,
@@ -810,8 +810,8 @@ class _SurahDetailPageState extends State<SurahDetailPage> {
                                   shadows: [
                                     Shadow(
                                       blurRadius: 2.0,
-                                      color: Colors.black.withOpacity(0.1),
-                                      offset: Offset(0.5, 0.5),
+                                      color: const Color.fromRGBO(0, 0, 0, 0.1),
+                                      offset: const Offset(0.5, 0.5),
                                     ),
                                   ],
                                 ),

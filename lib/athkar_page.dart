@@ -345,7 +345,7 @@ class _AthkarPageState extends State<AthkarPage> {
                 Text(
                   adhkar.text,
                   textAlign: TextAlign.right,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontFamily: 'AmiriQuran',
                     fontSize: 20,
                     height: 1.8,
@@ -353,8 +353,8 @@ class _AthkarPageState extends State<AthkarPage> {
                     shadows: [
                       Shadow(
                         blurRadius: 1.0,
-                        color: Colors.black.withOpacity(0.1),
-                        offset: Offset(0.5, 0.5),
+                        color: const Color.fromRGBO(0, 0, 0, 0.1),
+                        offset: const Offset(0.5, 0.5),
                       ),
                     ],
                   ),
