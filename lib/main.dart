@@ -205,7 +205,7 @@ class _HomePageState extends State<HomePage> {
                 padding: const EdgeInsets.all(16),
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
-                  childAspectRatio: 1.5,
+                  childAspectRatio: 1.7,
                   crossAxisSpacing: 16,
                   mainAxisSpacing: 16,
                 ),
@@ -247,7 +247,7 @@ class _HomePageState extends State<HomePage> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Container(
-                              padding: const EdgeInsets.all(8),
+                              padding: const EdgeInsets.all(6),
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 color: Theme.of(context)
@@ -258,7 +258,7 @@ class _HomePageState extends State<HomePage> {
                               child: Text(
                                 toArabicNumbers('${surah['number']}'),
                                 style: TextStyle(
-                                  fontSize: 20,
+                                  fontSize: 18,
                                   fontWeight: FontWeight.bold,
                                   color: Theme.of(context).colorScheme.primary,
                                 ),
@@ -268,7 +268,7 @@ class _HomePageState extends State<HomePage> {
                             Text(
                               surah['name'],
                               style: const TextStyle(
-                                fontSize: 20,
+                                fontSize: 18,
                                 fontWeight: FontWeight.bold,
                                 color: Color(0xFF234F1E),
                               ),
