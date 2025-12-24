@@ -22,6 +22,12 @@ class WelcomePage extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
+              Image.asset(
+                'assets/images/logo.png',
+                height: 150,
+                width: 150,
+              ),
+              const SizedBox(height: 20),
               Text(
                 'آياتنا وأذكارنا',
                 textAlign: TextAlign.center,
