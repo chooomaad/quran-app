@@ -32,14 +32,16 @@ class MyApp extends StatelessWidget {
         appBarTheme: AppBarTheme(
           backgroundColor: const Color(0xFF234F1E),
           foregroundColor: Colors.white,
-          titleTextStyle: const TextStyle(fontFamily: 'AmiriQuran', fontSize: 24, color: Colors.white),
+          titleTextStyle: const TextStyle(
+              fontFamily: 'AmiriQuran', fontSize: 24, color: Colors.white),
           iconTheme: const IconThemeData(color: Colors.white),
         ),
         bottomNavigationBarTheme: BottomNavigationBarThemeData(
           backgroundColor: const Color(0xFFF8F3E6),
           selectedItemColor: const Color(0xFF234F1E),
           unselectedItemColor: Colors.grey[600],
-          selectedLabelStyle: const TextStyle(fontFamily: 'AmiriQuran', fontWeight: FontWeight.bold),
+          selectedLabelStyle: const TextStyle(
+              fontFamily: 'AmiriQuran', fontWeight: FontWeight.bold),
           unselectedLabelStyle: const TextStyle(fontFamily: 'AmiriQuran'),
         ),
       ),
@@ -176,7 +178,14 @@ class _HomePageState extends State<HomePage> {
       ),
       body: Container(
         decoration: BoxDecoration(
-          color: const Color(0xFFF8F3E6),
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              const Color(0xFFF8F3E6),
+              const Color(0xFFE8DCC0),
+            ],
+          ),
         ),
         child: isLoading
             ? const Center(
@@ -194,10 +203,11 @@ class _HomePageState extends State<HomePage> {
                 itemBuilder: (context, index) {
                   final surah = surahs[index];
                   return Card(
-                    elevation: 4,
+                    elevation: 8,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15),
+                      borderRadius: BorderRadius.circular(20),
                     ),
+                    shadowColor: Colors.black.withOpacity(0.3),
                     child: InkWell(
                       onTap: () {
                         Navigator.push(
@@ -211,23 +221,54 @@ class _HomePageState extends State<HomePage> {
                         );
                       },
                       child: Container(
-                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          gradient: LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors: [
+                              Colors.white.withOpacity(0.9),
+                              const Color(0xFFBFA676).withOpacity(0.1),
+                            ],
+                          ),
+                        ),
+                        padding: const EdgeInsets.all(12),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text(
-                              surah['name'],
-                              style: const TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
+                            Container(
+                              padding: const EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .primary
+                                    .withOpacity(0.1),
                               ),
-                              textAlign: TextAlign.center,
+                              child: Text(
+                                '${surah['number']}',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: Theme.of(context).colorScheme.primary,
+                                ),
+                              ),
                             ),
                             const SizedBox(height: 8),
                             Text(
+                              surah['name'],
+                              style: const TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF234F1E),
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
                               '${surah['numberOfAyahs']} آية',
                               style: TextStyle(
-                                fontSize: 16,
+                                fontSize: 14,
                                 color: Theme.of(context).colorScheme.primary,
                               ),
                               textAlign: TextAlign.center,
@@ -285,11 +326,16 @@ class _SurahDetailPageState extends State<SurahDetailPage> {
   ];
 
   final List<Reciter> reciters = [
-    Reciter(name: "عبد الرحمن السديس", alquranCloudIdentifier: "ar.abdurrahmaansudais"),
+    Reciter(
+        name: "عبد الرحمن السديس",
+        alquranCloudIdentifier: "ar.abdurrahmaansudais"),
     Reciter(name: "ماهر المعيقلي", alquranCloudIdentifier: "ar.mahermuaiqly"),
     Reciter(name: "مشاري راشد العفاسي", alquranCloudIdentifier: "ar.alafasy"),
-    Reciter(name: "عبد الباسط عبد الصمد (مرتل)", alquranCloudIdentifier: "ar.abdulbasitmurattal"),
-    Reciter(name: "أحمد بن علي العجمي", alquranCloudIdentifier: "ar.ahmedalajmi"),
+    Reciter(
+        name: "عبد الباسط عبد الصمد (مرتل)",
+        alquranCloudIdentifier: "ar.abdulbasitmurattal"),
+    Reciter(
+        name: "أحمد بن علي العجمي", alquranCloudIdentifier: "ar.ahmedalajmi"),
   ];
   late Reciter _selectedReciter;
 
@@ -297,7 +343,8 @@ class _SurahDetailPageState extends State<SurahDetailPage> {
   void initState() {
     super.initState();
     _selectedReciter = reciters.first;
-    print("SurahDetailPage initState: Surah ${widget.surahNumber}, Reciter: ${_selectedReciter.alquranCloudIdentifier}");
+    print(
+        "SurahDetailPage initState: Surah ${widget.surahNumber}, Reciter: ${_selectedReciter.alquranCloudIdentifier}");
     _initAudioPlayer();
     fetchSurahDataAndPrepareAudio();
   }
@@ -311,13 +358,14 @@ class _SurahDetailPageState extends State<SurahDetailPage> {
   void _setupAudioPlayer() {
     _audioPlayer?.setVolume(1.0);
     _audioPlayer?.setLoopMode(LoopMode.off);
-    
+
     _playerStateSubscription?.cancel();
     _processingStateSubscription?.cancel();
-    
+
     _playerStateSubscription = _audioPlayer?.playerStateStream.listen((state) {
       if (!mounted) return;
-      print("AudioPlayer State: Playing=${state.playing}, ProcessingState=${state.processingState}");
+      print(
+          "AudioPlayer State: Playing=${state.playing}, ProcessingState=${state.processingState}");
       if (_isPlaying != state.playing) {
         setState(() {
           _isPlaying = state.playing;
@@ -325,16 +373,19 @@ class _SurahDetailPageState extends State<SurahDetailPage> {
       }
     });
 
-    _processingStateSubscription = _audioPlayer?.processingStateStream.listen((state) {
+    _processingStateSubscription =
+        _audioPlayer?.processingStateStream.listen((state) {
       if (!mounted) return;
-      print("AudioPlayer ProcessingState: $state. Current _isAudioReady before check: $_isAudioReady");
-      
+      print(
+          "AudioPlayer ProcessingState: $state. Current _isAudioReady before check: $_isAudioReady");
+
       bool newAudioReadyState = state == ProcessingState.ready;
       if (_isAudioReady != newAudioReadyState) {
-          print("Setting _isAudioReady to $newAudioReadyState based on ProcessingState $state");
-          setState(() {
-            _isAudioReady = newAudioReadyState;
-          });
+        print(
+            "Setting _isAudioReady to $newAudioReadyState based on ProcessingState $state");
+        setState(() {
+          _isAudioReady = newAudioReadyState;
+        });
       }
 
       if (state == ProcessingState.completed) {
@@ -382,12 +433,13 @@ class _SurahDetailPageState extends State<SurahDetailPage> {
   }
 
   Future<void> fetchSurahDataAndPrepareAudio() async {
-    print("fetchSurahDataAndPrepareAudio for Surah ${widget.surahNumber} with reciter ${_selectedReciter.alquranCloudIdentifier}");
+    print(
+        "fetchSurahDataAndPrepareAudio for Surah ${widget.surahNumber} with reciter ${_selectedReciter.alquranCloudIdentifier}");
     if (!mounted) {
       print("fetchSurahDataAndPrepareAudio aborted: not mounted");
       return;
     }
-    
+
     setState(() {
       isLoading = true;
       _isAudioReady = false;
@@ -400,12 +452,16 @@ class _SurahDetailPageState extends State<SurahDetailPage> {
       }
 
       // Récupérer les détails de la sourate
-      final response = await http.get(
-        Uri.parse('https://api.alquran.cloud/v1/surah/${widget.surahNumber}/quran-uthmani'),
-      ).timeout(
-        const Duration(seconds: 30),
-        onTimeout: () => throw TimeoutException('La connexion a expiré (30 secondes)'),
-      );
+      final response = await http
+          .get(
+            Uri.parse(
+                'https://api.alquran.cloud/v1/surah/${widget.surahNumber}/quran-uthmani'),
+          )
+          .timeout(
+            const Duration(seconds: 30),
+            onTimeout: () =>
+                throw TimeoutException('La connexion a expiré (30 secondes)'),
+          );
 
       if (!mounted) return;
 
@@ -413,7 +469,8 @@ class _SurahDetailPageState extends State<SurahDetailPage> {
         final data = json.decode(response.body);
         setState(() {
           ayahs = data['data']['ayahs'];
-          print("Fetched ${ayahs.length} ayahs for Surah ${widget.surahNumber}");
+          print(
+              "Fetched ${ayahs.length} ayahs for Surah ${widget.surahNumber}");
         });
 
         if (ayahs.isNotEmpty) {
@@ -444,15 +501,19 @@ class _SurahDetailPageState extends State<SurahDetailPage> {
       _audioError = null;
     });
 
-    String surahAudioUrl = ""; // Déclarée ici pour être accessible dans le catch
+    String surahAudioUrl =
+        ""; // Déclarée ici pour être accessible dans le catch
 
     try {
       AudioSource audioSource;
 
-      if (_surahAudioReciterIdentifiers.contains(_selectedReciter.alquranCloudIdentifier)) {
+      if (_surahAudioReciterIdentifiers
+          .contains(_selectedReciter.alquranCloudIdentifier)) {
         // Utiliser l'URL directe du CDN pour l'audio de la sourate entière
-        surahAudioUrl = "https://cdn.islamic.network/quran/audio-surah/128/${_selectedReciter.alquranCloudIdentifier}/${widget.surahNumber}.mp3";
-        print("Preparing single audio source (surah) for Surah ${widget.surahNumber} with reciter ${_selectedReciter.alquranCloudIdentifier}: $surahAudioUrl");
+        surahAudioUrl =
+            "https://cdn.islamic.network/quran/audio-surah/128/${_selectedReciter.alquranCloudIdentifier}/${widget.surahNumber}.mp3";
+        print(
+            "Preparing single audio source (surah) for Surah ${widget.surahNumber} with reciter ${_selectedReciter.alquranCloudIdentifier}: $surahAudioUrl");
         if (kIsWeb) {
           audioSource = AudioSource.uri(Uri.parse(surahAudioUrl));
         } else {
@@ -460,54 +521,66 @@ class _SurahDetailPageState extends State<SurahDetailPage> {
         }
       } else {
         // Pour les autres récitateurs (ex: Sudais, Maher), charger verset par verset
-        print("Preparing concatenated audio source (verse by verse) for Surah ${widget.surahNumber} with reciter ${_selectedReciter.alquranCloudIdentifier}");
+        print(
+            "Preparing concatenated audio source (verse by verse) for Surah ${widget.surahNumber} with reciter ${_selectedReciter.alquranCloudIdentifier}");
 
         // S'assurer que les ayahs sont chargés avec les données audio du récitateur sélectionné
         // Cet appel est crucial si fetchSurahDataAndPrepareAudio ne charge pas déjà les données audio du récitateur
-        final response = await http.get(
-          Uri.parse('https://api.alquran.cloud/v1/surah/${widget.surahNumber}/${_selectedReciter.alquranCloudIdentifier}'),
-        ).timeout(
-          const Duration(seconds: 30),
-          onTimeout: () => throw TimeoutException('Timeout (30s) fetching verse audio data for ${_selectedReciter.alquranCloudIdentifier}'),
-        );
+        final response = await http
+            .get(
+              Uri.parse(
+                  'https://api.alquran.cloud/v1/surah/${widget.surahNumber}/${_selectedReciter.alquranCloudIdentifier}'),
+            )
+            .timeout(
+              const Duration(seconds: 30),
+              onTimeout: () => throw TimeoutException(
+                  'Timeout (30s) fetching verse audio data for ${_selectedReciter.alquranCloudIdentifier}'),
+            );
 
         if (!mounted) return;
 
         if (response.statusCode == 200) {
           final data = json.decode(response.body);
           if (data['data'] == null || data['data']['ayahs'] == null) {
-            throw Exception('No audio data found for ayahs with reciter ${_selectedReciter.alquranCloudIdentifier}');
+            throw Exception(
+                'No audio data found for ayahs with reciter ${_selectedReciter.alquranCloudIdentifier}');
           }
           final ayahsWithAudio = data['data']['ayahs'] as List<dynamic>;
-          
+
           if (ayahsWithAudio.isEmpty) {
-            throw Exception('Empty ayahs list for reciter ${_selectedReciter.alquranCloudIdentifier}');
+            throw Exception(
+                'Empty ayahs list for reciter ${_selectedReciter.alquranCloudIdentifier}');
           }
 
           List<AudioSource> audioSources = [];
           for (var ayahData in ayahsWithAudio) {
-            if (ayahData['audio'] != null && (ayahData['audio'] as String).isNotEmpty) {
+            if (ayahData['audio'] != null &&
+                (ayahData['audio'] as String).isNotEmpty) {
               if (kIsWeb) {
-                audioSources.add(AudioSource.uri(Uri.parse(ayahData['audio'] as String)));
+                audioSources.add(
+                    AudioSource.uri(Uri.parse(ayahData['audio'] as String)));
               } else {
                 // Pourrait envisager LockCachingAudioSource ici aussi si nécessaire, mais la mise en cache de nombreux petits fichiers peut être moins efficace.
                 // Pour l'instant, utilisons AudioSource.uri pour la simplicité, puis nous pourrons optimiser si besoin.
-                audioSources.add(AudioSource.uri(Uri.parse(ayahData['audio'] as String)));
+                audioSources.add(
+                    AudioSource.uri(Uri.parse(ayahData['audio'] as String)));
               }
             }
           }
 
           if (audioSources.isEmpty) {
-            throw Exception('No valid audio URLs found for any ayahs with reciter ${_selectedReciter.alquranCloudIdentifier}');
+            throw Exception(
+                'No valid audio URLs found for any ayahs with reciter ${_selectedReciter.alquranCloudIdentifier}');
           }
           audioSource = ConcatenatingAudioSource(children: audioSources);
-          print("Concatenated audio source created with ${audioSources.length} ayahs for ${_selectedReciter.alquranCloudIdentifier}.");
-
+          print(
+              "Concatenated audio source created with ${audioSources.length} ayahs for ${_selectedReciter.alquranCloudIdentifier}.");
         } else {
-          throw Exception('Failed to load verse audio data for ${_selectedReciter.alquranCloudIdentifier} (Status: ${response.statusCode})');
+          throw Exception(
+              'Failed to load verse audio data for ${_selectedReciter.alquranCloudIdentifier} (Status: ${response.statusCode})');
         }
       }
-      
+
       // audioSource = AudioSource.uri(Uri.parse(surahAudioUrl)); // TEST: Utiliser AudioSource.uri partout -- COMMENTÉ
 
       // Il n'est plus nécessaire de récupérer les données des ayahs juste pour l'audio
@@ -518,14 +591,15 @@ class _SurahDetailPageState extends State<SurahDetailPage> {
       if (_audioPlayer == null) {
         _initAudioPlayer();
       }
-      await _audioPlayer!.setAudioSource(audioSource, initialPosition: Duration.zero, preload: true);
+      await _audioPlayer!.setAudioSource(audioSource,
+          initialPosition: Duration.zero, preload: true);
       print("Audio source set successfully for Surah ${widget.surahNumber}");
       setState(() {
         _isLoadingAudio = false;
       });
-
     } catch (e) {
-      print("Error preparing audio for Surah ${widget.surahNumber} with reciter ${_selectedReciter.alquranCloudIdentifier}: $e");
+      print(
+          "Error preparing audio for Surah ${widget.surahNumber} with reciter ${_selectedReciter.alquranCloudIdentifier}: $e");
       print("URL tentée : $surahAudioUrl");
       if (mounted) {
         setState(() {
@@ -533,7 +607,8 @@ class _SurahDetailPageState extends State<SurahDetailPage> {
           _audioError = "Erreur de chargement audio: ${e.toString()}";
         });
       }
-      _handleAudioError("Erreur lors de la préparation de l'audio (CDN Surah): $e");
+      _handleAudioError(
+          "Erreur lors de la préparation de l'audio (CDN Surah): $e");
     }
   }
 
@@ -542,9 +617,9 @@ class _SurahDetailPageState extends State<SurahDetailPage> {
       context: context,
       builder: (context) => AlertDialog(
         title: const Text("خطأ"),
-        content: Text(error.toString().contains("Exception:") 
-          ? error.toString().replaceAll("Exception: ", "") 
-          : "حدث خطأ غير متوقع. الرجاء المحاولة مرة أخرى."),
+        content: Text(error.toString().contains("Exception:")
+            ? error.toString().replaceAll("Exception: ", "")
+            : "حدث خطأ غير متوقع. الرجاء المحاولة مرة أخرى."),
         actions: [
           TextButton(
             child: const Text("إعادة المحاولة"),
@@ -610,10 +685,10 @@ class _SurahDetailPageState extends State<SurahDetailPage> {
     final Reciter? selected = await showMenu<Reciter>(
       context: context,
       position: RelativeRect.fromLTRB(
-        MediaQuery.of(context).size.width - 100, 
-        offset.dy - 120, 
-        MediaQuery.of(context).size.width, 
-        offset.dy, 
+        MediaQuery.of(context).size.width - 100,
+        offset.dy - 120,
+        MediaQuery.of(context).size.width,
+        offset.dy,
       ),
       items: reciters.map((Reciter reciter) {
         return PopupMenuItem<Reciter>(
@@ -628,20 +703,23 @@ class _SurahDetailPageState extends State<SurahDetailPage> {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
     );
 
-    if (selected != null && selected.alquranCloudIdentifier != _selectedReciter.alquranCloudIdentifier) {
+    if (selected != null &&
+        selected.alquranCloudIdentifier !=
+            _selectedReciter.alquranCloudIdentifier) {
       if (!mounted) return;
-      print("Changing reciter to: ${selected.name} (${selected.alquranCloudIdentifier})");
+      print(
+          "Changing reciter to: ${selected.name} (${selected.alquranCloudIdentifier})");
 
       // Modifications pour un rechargement plus robuste
       await _audioPlayer?.stop(); // Arrêter explicitement la lecture en cours
-      _initAudioPlayer();      // Réinitialiser le lecteur audio
+      _initAudioPlayer(); // Réinitialiser le lecteur audio
 
       setState(() {
         _selectedReciter = selected;
         _isPlaying = false;
         // isLoading = true; // Déjà géré dans fetchSurahDataAndPrepareAudio
       });
-      await fetchSurahDataAndPrepareAudio(); 
+      await fetchSurahDataAndPrepareAudio();
     }
   }
 
@@ -673,30 +751,75 @@ class _SurahDetailPageState extends State<SurahDetailPage> {
       ),
       body: Container(
         decoration: BoxDecoration(
-          color: const Color(0xFFF8F3E6),
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              const Color(0xFFF8F3E6),
+              const Color(0xFFE8DCC0),
+            ],
+          ),
         ),
         child: isLoading
             ? const Center(child: CircularProgressIndicator())
             : ayahs.isEmpty
-                ? const Center(child: Text('لا توجد آيات لتحميلها', style: TextStyle(fontFamily: 'AmiriQuran', fontSize: 20)))
+                ? const Center(
+                    child: Text('لا توجد آيات لتحميلها',
+                        style:
+                            TextStyle(fontFamily: 'AmiriQuran', fontSize: 20)))
                 : SingleChildScrollView(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 15.0),
-                    child: RichText(
-                      textAlign: TextAlign.justify,
-                      textDirection: TextDirection.rtl,
-                      text: TextSpan(
-                        children: ayahs.map<TextSpan>((ayah) {
-                          return TextSpan(
-                            text: "${ayah['text']} (${ayah['numberInSurah']}) ",
-                            style: const TextStyle(
-                              fontFamily: 'AmiriQuran',
-                              fontSize: 26,
-                              height: 2.2,
-                              color: Colors.black87,
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20.0, vertical: 15.0),
+                    child: Column(
+                      children: [
+                        if (widget.surahNumber != 1 && widget.surahNumber != 9)
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 20.0),
+                            child: Text(
+                              'بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ',
+                              style: const TextStyle(
+                                fontFamily: 'AmiriQuran',
+                                fontSize: 28,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF234F1E),
+                                shadows: [
+                                  Shadow(
+                                    blurRadius: 5.0,
+                                    color: Colors.black.withOpacity(0.2),
+                                    offset: Offset(1.0, 1.0),
+                                  ),
+                                ],
+                              ),
+                              textAlign: TextAlign.center,
+                              textDirection: TextDirection.rtl,
                             ),
-                          );
-                        }).toList(),
-                      ),
+                          ),
+                        RichText(
+                          textAlign: TextAlign.justify,
+                          textDirection: TextDirection.rtl,
+                          text: TextSpan(
+                            children: ayahs.map<TextSpan>((ayah) {
+                              return TextSpan(
+                                text:
+                                    "${ayah['text']} ﴿${ayah['numberInSurah']}﴾ ",
+                                style: const TextStyle(
+                                  fontFamily: 'AmiriQuran',
+                                  fontSize: 26,
+                                  height: 2.2,
+                                  color: Colors.black87,
+                                  shadows: [
+                                    Shadow(
+                                      blurRadius: 2.0,
+                                      color: Colors.black.withOpacity(0.1),
+                                      offset: Offset(0.5, 0.5),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            }).toList(),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
       ),
@@ -711,7 +834,9 @@ class _SurahDetailPageState extends State<SurahDetailPage> {
               onPressed: _togglePlay,
               backgroundColor: Theme.of(context).colorScheme.primary,
               child: Icon(
-                _isPlaying ? Icons.pause_circle_filled : Icons.play_circle_filled,
+                _isPlaying
+                    ? Icons.pause_circle_filled
+                    : Icons.play_circle_filled,
                 color: Colors.white,
                 size: 36,
               ),

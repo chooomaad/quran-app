@@ -50,7 +50,8 @@ class WelcomePage extends StatelessWidget {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.white,
                   foregroundColor: Theme.of(context).colorScheme.primary,
-                  padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
                   textStyle: const TextStyle(
                     fontSize: 22,
                     fontFamily: 'AmiriQuran',
@@ -62,7 +63,8 @@ class WelcomePage extends StatelessWidget {
                   elevation: 5,
                 ),
                 onPressed: () {
-                  Navigator.pushReplacement( // pushReplacement pour ne pas pouvoir revenir à la welcome page
+                  Navigator.pushReplacement(
+                    // pushReplacement pour ne pas pouvoir revenir à la welcome page
                     context,
                     MaterialPageRoute(builder: (context) => const MainScreen()),
                   );
@@ -75,4 +77,4 @@ class WelcomePage extends StatelessWidget {
       ),
     );
   }
-} 
+}
